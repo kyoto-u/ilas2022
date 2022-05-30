@@ -44,26 +44,29 @@ def return_weather(ack, respond, command):
 def repeat_text(ack, respond, command):
     ack()
     userInput =command['text']
-    if '|' in userInput:
-      userInputArray = userInput.split('|')
-      searchCount = int(userInputArray[1])
-      searchQuery = userInputArray[0].replace('"', '\"')
+    if userInput == "":
+        respond("/google 検索語句(|個数)の形式で入力してください")
     else:
-      searchCount = 1
-      searchQuery = userInput
-    respond("検索中....")
-    count=0
-    for url in search(searchQuery, lang="jp", num=searchCount):
-      respond(url)
-      count += 1
-      if (count == searchCount):
-        break
+        if '|' in userInput:
+            userInputArray = userInput.split('|')
+            searchCount = int(userInputArray[1])
+            searchQuery = userInputArray[0].replace('"', '\"')
+        else:
+            searchCount = 1
+            searchQuery = userInput
+            respond("検索中....")
+            count=0
+        for url in search(searchQuery, lang="jp", num=searchCount):
+            respond(url)
+            count += 1
+            if (count == searchCount):
+                break
 
 @app.command("/demachi")
 def repeat_text(ack, respond, command):
   ack()
   dt_now = str(datetime.datetime.now())
-  timecell=(546, 566, 626, 651, 712, 736, 760, 824, 848, 912, 927, 942, 957, 1012, 1027, 1042, 1057, 1112, 1127, 1142, 1157, 1212, 1227, 1242, 1257, 1312, 1327, 1342, 1357, 1412, 1427, 1442, 1457, 1512, 1527, 1542, 1557, 1612, 1627, 1642, 1657, 1712, 1736, 1760, 1824, 1848, 1912, 1942, 2012, 2042, 2116, 2161, 2237)
+  timecell=(534, 554, 614, 629, 639, 651,700,712,724,736,748,802,812,822,836,848,900,915,930,945,1000,1015,1030,1045,1100,1115,1130,1145,1200,1215,1230,1245,1300,1315,1330,1345,1400,1415,1430,1445,1500,1507,1515,1530,1545,1600,1607,1615,1630,1645,1700,1712,1724,1736,1748,1800,1812,1824,1836,1848,1900,1915,1930,1945,2000,2015,2030,2045,2104,2127,2149,2204,2225,2250,2316,2333)
   nowtime = int(dt_now[11:16].replace(":",""))
   for i in timecell:
       if i-nowtime >0:
