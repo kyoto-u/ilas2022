@@ -1,7 +1,11 @@
+import os
 import requests
 import pprint
+from dotenv import load_dotenv
 
-server = 'https://hooks.slack.com/services/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'
+load_dotenv()
+
+server = os.environ.get("INCOMMING_URL")
 data = {'text': 'python request test: atsumi'}
 
 r = requests.post(server, json=data)
