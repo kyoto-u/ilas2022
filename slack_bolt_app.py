@@ -8,6 +8,10 @@ load_dotenv()
 
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
+@app.message("hi")
+def message_hi(message, say):
+    say(f"Hi!!")
+
 @app.message("hello")
 def message_hello(message, say):
     say(f"Hey there <@{message['user']}>!")
