@@ -30,6 +30,26 @@ def command_fizzbuzz(ack, respond, command):
   except ValueError:
     respond(f"<@{command['user_id']}> Invalid Number")
 
+
+
+@app.command("/item")
+def command_item(command):
+    item=command["text"]
+
+
+    @app.message("うちのオカンによると")
+    def message_yes(say):
+        say(f"それ{item}やないかい")
+
+    @app.message("でも")
+    def message_yes(say):
+      say(f"ほな{item}ちゃうかー")
+
+@app.command("/start")
+def command_start(say,command):
+    start =command['text']
+    say(f"{start}と楽単はいくらあっても困りませんからね～。ありがとうございます。")
+
 def fizzbuzz(num):
   if num % 15 == 0:
     return 'FizzBuzz'
@@ -40,5 +60,4 @@ def fizzbuzz(num):
   else:
     return str(num)
 
-SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
-
+SocketModeHandler(app,os.environ["SLACK_APP_TOKEN"]).start()
