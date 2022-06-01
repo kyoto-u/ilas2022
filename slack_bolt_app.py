@@ -15,7 +15,6 @@ def message_hi(message, say):
 
 @app.message("hello")
 def message_hello(message, say):
-<<<<<<< HEAD
     say(f"Hey there <@{message['user']}>!")
 
 @app.event("app_mention")
