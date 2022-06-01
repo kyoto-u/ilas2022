@@ -23,16 +23,7 @@ def message_hello(message, respond):
 def event_mention(event, respond):
     print("event_mention: ", json.dumps(event, indent=2))
 
-@app.command("/fizzbuzz_tawara")
-def command_fizzbuzz(ack, respond, command):
-    ack()
-    try:
-        num = int(command['text'])
-        ans = fizzbuzz(num)
-        respond(f"<@{command['user_id']}> {ans}")
-    except ValueError:
-        respond(f"<@{command['user_id']}> Invalid Number")
-
+#add by tawara
 @app.command("/weather")
 def return_weather(ack, respond, command):
     ack()
@@ -40,6 +31,7 @@ def return_weather(ack, respond, command):
     weather_speak = weather_get()[1]
     respond(f"<@{command['user_id']}>  京都府( {weather_place} )の今日の天気は {weather_speak} です。")
 
+#add by tawara
 @app.command("/google")
 def repeat_text(ack, respond, command):
     ack()
@@ -62,6 +54,7 @@ def repeat_text(ack, respond, command):
             if (count == searchCount):
                 break
 
+#add by tawara                
 @app.command("/demachi")
 def repeat_text(ack, respond, command):
   ack()
@@ -75,6 +68,24 @@ def repeat_text(ack, respond, command):
           respond(''.join(str_list)+"までに京都大学を出ればOKです！")
           break
 
+@app.command("/item")
+def command_item(command):
+    item=command["text"]
+
+
+    @app.message("うちのオカンによると")
+    def message_yes(say):
+        say(f"それ{item}やないかい")
+
+    @app.message("でも")
+    def message_yes(say):
+      say(f"ほな{item}ちゃうかー")
+
+@app.command("/start")
+def command_start(say,command):
+    start =command['text']
+    say(f"{start}と楽単はいくらあっても困りませんからね～。ありがとうございます。")
+
 def fizzbuzz(num):
     if num % 15 == 0:
         return 'FizzBuzz'
@@ -84,7 +95,8 @@ def fizzbuzz(num):
         return 'Fizz'
     else:
         return str(num)
-
+      
+#add by tawara
 def weather_get():
     weather_url = "https://www.jma.go.jp/bosai/forecast/data/forecast/260000.json"
     weather_json = requests.get(weather_url).json()
@@ -92,4 +104,4 @@ def weather_get():
     weather_full = weather_json[0]["timeSeries"][0]["areas"][0]["weathers"][0]
     return weather_place, weather_full
 
-SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
+SocketModeHandler(app,os.environ["SLACK_APP_TOKEN"]).start()
