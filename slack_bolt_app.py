@@ -17,7 +17,7 @@ def message_hi(message, say):
 
 @app.message("hello")
 def message_hello(message, say):
-    respond(f"Hey there <@{message['user']}>!")
+    say(f"Hey there <@{message['user']}>!")
 
 @app.event("app_mention")
 def event_mention(event, say):
