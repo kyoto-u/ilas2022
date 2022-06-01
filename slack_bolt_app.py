@@ -16,13 +16,23 @@ def message_hi(message, say):
     say(f"Hi!!")
 
 @app.message("hello")
-def message_hello(message, respond):
+def message_hello(message, say):
     respond(f"Hey there <@{message['user']}>!")
 
 @app.event("app_mention")
-def event_mention(event, respond):
+def event_mention(event, say):
     print("event_mention: ", json.dumps(event, indent=2))
-
+    
+@app.command("/fizzbuzz")
+def command_fizzbuzz(ack, respond, command):
+  ack()
+  try:
+    num = int(command['text'])
+    ans = fizzbuzz(num)
+    respond(f"<@{command['user_id']}> {ans}")
+  except ValueError:
+    respond(f"<@{command['user_id']}> Invalid Number")
+    
 #add by tawara
 @app.command("/weather")
 def return_weather(ack, respond, command):
