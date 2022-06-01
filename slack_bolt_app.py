@@ -15,6 +15,7 @@ def message_hi(message, say):
 
 @app.message("hello")
 def message_hello(message, say):
+<<<<<<< HEAD
     say(f"Hey there <@{message['user']}>!")
 
 @app.event("app_mention")
@@ -23,6 +24,48 @@ def event_mention(event, say):
 
 @app.command("/fizzbuzz")
 def command_fizzbuzz(ack, respond, command):
+  ack()
+  try:
+    num = int(command['text'])
+    ans = fizzbuzz(num)
+    respond(f"<@{command['user_id']}> {ans}")
+  except ValueError:
+    respond(f"<@{command['user_id']}> Invalid Number")
+    
+#add by tawara
+@app.command("/weather")
+def return_weather(ack, respond, command):
+    ack()
+    weather_place = weather_get()[0]
+    weather_speak = weather_get()[1]
+    respond(f"<@{command['user_id']}>  京都府( {weather_place} )の今日の天気は {weather_speak} です。")
+
+#add by tawara
+@app.command("/google")
+def repeat_text(ack, respond, command):
+    ack()
+    userInput =command['text']
+    if userInput == "":
+        respond("/google 検索語句(|個数)の形式で入力してください")
+    else:
+        if '|' in userInput:
+            userInputArray = userInput.split('|')
+            searchCount = int(userInputArray[1])
+            searchQuery = userInputArray[0].replace('"', '\"')
+        else:
+            searchCount = 1
+            searchQuery = userInput
+            respond("検索中....")
+            count=0
+        for url in search(searchQuery, lang="jp", num=searchCount):
+            respond(url)
+            count += 1
+            if (count == searchCount):
+                break
+
+#add by tawara                
+@app.command("/demachi")
+def repeat_text(ack, respond, command):
   ack()
   try:
     num = int(command['text'])
