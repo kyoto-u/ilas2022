@@ -11,6 +11,49 @@ load_dotenv()
 
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
+def what_time(t):
+  hour = t.hour
+  if hour >= 3 and hour < 11:
+    return "morning"
+  elif hour >= 11 and hour < 18:
+    return "noon"
+  else:
+    return "night"
+
+def greet_word(time):
+    if time == "morning":
+      return "Good morning"
+    elif time == "noon":
+      return "Good afternoon"
+    elif time == "night":
+      return "Good evening"
+
+dt_now = datetime.datetime.now()
+
+@app.message("good morning")
+def good_morning(message, say):
+    now_time = what_time(dt_now)
+    greetword = greet_word(now_time)
+    say(greetword + f" <@{message['user']}>!")
+    if now_time != "morning":
+      say("It is not morning. It is " + now_time + ".")
+
+@app.message("good afternoon")
+def good_morning(message, say):
+    now_time = what_time(dt_now)
+    greetword = greet_word(now_time)
+    say(greetword + f" <@{message['user']}>!")
+    if now_time != "noon":
+      say("It is not noon. It is " + now_time + ".")
+
+@app.message("good evening")
+def good_morning(message, say):
+    now_time = what_time(dt_now)
+    greetword = greet_word(now_time)
+    say(greetword + f" <@{message['user']}>!")
+    if now_time != "night":
+      say("It is not night. It is " + now_time + ".")
+
 @app.message("hi")
 def message_hi(message, say):
     say(f"Hi!!")
