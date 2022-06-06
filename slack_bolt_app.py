@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import json
+import requests
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 
@@ -59,5 +60,13 @@ def fizzbuzz(num):
     return 'Fizz'
   else:
     return str(num)
+
+@app.message("天気")
+def message_weather(message, say):
+  request_data = requests.get("https://www.jma.go.jp/bosai/forecast/data/forecast/260000.json").json()
+  wfdata = request_data[0]["timeSeries"][0]["areas"][0]["weathers"][0]
+  wfdataf = "今日の京都の天気は"+wfdata+"です。 "
+  say(wfdataf)
+
 
 SocketModeHandler(app,os.environ["SLACK_APP_TOKEN"]).start()
