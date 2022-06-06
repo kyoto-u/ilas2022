@@ -4,6 +4,8 @@ import json
 import requests
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+from googlesearch import search
+import datetime
 
 load_dotenv()
 
@@ -30,6 +32,53 @@ def command_fizzbuzz(ack, respond, command):
     respond(f"<@{command['user_id']}> {ans}")
   except ValueError:
     respond(f"<@{command['user_id']}> Invalid Number")
+    
+#add by tawara
+@app.command("/weather")
+def return_weather(ack, respond, command):
+    ack()
+    weather_place = weather_get()[0]
+    weather_speak = weather_get()[1]
+    respond(f"<@{command['user_id']}>  京都府( {weather_place} )の今日の天気は {weather_speak} です。")
+
+#add by tawara
+@app.command("/google")
+def repeat_text(ack, respond, command):
+    ack()
+    userInput =command['text']
+    if userInput == "":
+        respond("/google 検索語句(|個数)の形式で入力してください")
+    else:
+        if '|' in userInput:
+            userInputArray = userInput.split('|')
+            searchCount = int(userInputArray[1])
+            searchQuery = userInputArray[0].replace('"', '\"')
+            respond("検索中....")
+        else:
+            searchCount = 1
+            searchQuery = userInput
+            respond("検索中....")
+            count=0
+        for url in search(searchQuery, lang="jp", num=searchCount):
+            respond(url)
+            count = 0
+            count += 1
+            if (count-1 == searchCount):
+                break
+
+#add by tawara                
+@app.command("/demachi")
+def repeat_text(ack, respond, command):
+  ack()
+  dt_now = str(datetime.datetime.now())
+  timecell=(534, 554, 614, 629, 639, 651,700,712,724,736,748,802,812,822,836,848,900,915,930,945,1000,1015,1030,1045,1100,1115,1130,1145,1200,1215,1230,1245,1300,1315,1330,1345,1400,1415,1430,1445,1500,1507,1515,1530,1545,1600,1607,1615,1630,1645,1700,1712,1724,1736,1748,1800,1812,1824,1836,1848,1900,1915,1930,1945,2000,2015,2030,2045,2104,2127,2149,2204,2225,2250,2316,2333)
+  nowtime = int(dt_now[11:16].replace(":",""))
+  for i in timecell:
+      if i-nowtime >0:
+          str_list = list(str(i))
+          str_list.insert(-2,":")
+          respond(''.join(str_list)+"までに京都大学を出ればOKです！")
+          break
 
 
 
@@ -67,6 +116,14 @@ def message_weather(message, say):
   wfdata = request_data[0]["timeSeries"][0]["areas"][0]["weathers"][0]
   wfdataf = "今日の京都の天気は"+wfdata+"です。 "
   say(wfdataf)
+
+#add by tawara
+def weather_get():
+    weather_url = "https://www.jma.go.jp/bosai/forecast/data/forecast/260000.json"
+    weather_json = requests.get(weather_url).json()
+    weather_place = weather_json[0]["timeSeries"][0]["areas"][0]["area"]["name"]
+    weather_full = weather_json[0]["timeSeries"][0]["areas"][0]["weathers"][0]
+    return weather_place, weather_full
 
 
 SocketModeHandler(app,os.environ["SLACK_APP_TOKEN"]).start()
