@@ -58,15 +58,14 @@ def repeat_text(ack, respond, command):
             searchCount = 1
             searchQuery = userInput
             respond("検索中....")
-            count=0
+        count=0
         for url in search(searchQuery, lang="jp", num=searchCount):
             respond(url)
-            count = 0
             count += 1
-            if (count-1 == searchCount):
+            if (count == searchCount):
                 break
 
-#add by tawara                
+#add by tawara
 @app.command("/demachi")
 def repeat_text(ack, respond, command):
   ack()
