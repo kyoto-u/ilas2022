@@ -6,6 +6,7 @@ from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from googlesearch import search
 import datetime
+import re
 
 load_dotenv()
 
@@ -122,6 +123,69 @@ def repeat_text(ack, respond, command):
           respond(''.join(str_list)+"までに京都大学を出ればOKです！")
           break
 
+# add by takeda
+@app.message("factorization")
+def message_fact(message, say):
+    msg = re.findall(r'-?[0-9]+', message['text'])
+    if len(msg) == 0:
+      say('No natural number found')
+    elif len(msg) > 1:
+      say('Enter only one natural number')
+    else:
+      num = int(msg[0])
+      if num <= 0:
+        say("Enter a natural number")
+        return
+      if num == 1:
+        say("1 is not prime")
+        return
+    rt ,cnt= fact(num)
+    ret = ''
+    prime = False
+
+    if len(rt) == 1:
+        for i in rt.keys():
+            if rt[i] == 1:
+                prime = True
+    for i ,j in rt.items():
+            if j == 1:
+                ret = ret + str(i)
+            elif j > 1:
+                ret = ret + str(i) + '^' + str(j)
+            cnt -= 1
+            if cnt > 0:
+                ret += ' * '
+            if cnt == 0:
+                break
+    if prime:
+        say(ret + " is prime")
+    else:
+      say(str(num) + ' = ' + ret)
+
+def fact(num):
+    count = 0
+    temp = num
+    rtlist = {}
+    prime = False
+    while(not prime):
+        for i in range(2,temp+1):
+            if i * i > temp:
+                prime = True
+                if not str(temp) in rtlist:
+                    count += 1
+                    rtlist.update({str(temp) : 1})
+                else:
+                  rtlist.update({str(temp) : rtlist[str(temp)] + 1})
+                break
+            elif temp % i == 0:
+                if not str(i) in rtlist:
+                    rtlist.update({str(i) : 1})
+                    count += 1
+                else:
+                  rtlist.update({str(i) : rtlist[str(i)] + 1})
+                temp = temp // i
+                break
+    return(rtlist, count)
 
 
 @app.command("/item")
