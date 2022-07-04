@@ -23,8 +23,6 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
         if (assignment.status === "fulfilled") assignments.push(assignment.value);
     }
     await toStorage(hostname, AssignmentFetchTimeStorage, new Date().getTime() / 1000);
-    // alert(assignments);
-    console.log(assignments);
     return assignments;
 };
 
