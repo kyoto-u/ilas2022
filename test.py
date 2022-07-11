@@ -12,7 +12,6 @@ app = Flask(__name__, static_folder='.', static_url_path='')
 @app.route('/', methods=["POST"])
 def receiver_run():
     param = json.loads(request.data.decode('utf-8'))
-    print(param)
     
     system_run(param)
 

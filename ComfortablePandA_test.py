@@ -1,3 +1,5 @@
+#これはpythonによるデータ送信側のテストコード
+
 import requests
 
 #POST先URL
