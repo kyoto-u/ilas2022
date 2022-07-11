@@ -24,7 +24,7 @@ def system_run(infList):
     
         usedInfList = [infList[0], PandaAssignments] # 保存するようの情報
     # 保存
-    with open('datas.pickle', mode='wb') as f:
+    with open('datas_panda.pickle', mode='wb') as f:
         pickle.dump(usedInfList, f)
     print(usedInfList)
 
