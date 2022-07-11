@@ -16,7 +16,16 @@
 
 <div id="subSakai" style="">
 </div>
-
+<p>User ID = <span id="input"></span></p>
+<script>
+    function getUniqueStr(myStrong){
+        var strong = 1000;
+        if (myStrong) strong = myStrong;
+        return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+    }
+    var uuid = getUniqueStr(8)
+    document.getElementById('input').innerHTML = uuid ;
+</script> 
 <script src="subsakai.js"></script>
 </body>
 </html>
