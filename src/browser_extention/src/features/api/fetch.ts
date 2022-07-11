@@ -44,6 +44,7 @@ export const fetchAssignment = (course: Course): Promise<Assignment> => {
                 if (response.ok) {
                     const data = await response.json();
                     const assignmentEntries = decodeAssignmentFromAPI(data);
+
                     //ここから送信部
                     const posturl = "http://127.0.0.1:8080";
                     const senddata = JSON.stringify(assignmentEntries);//送信データ
@@ -63,6 +64,7 @@ export const fetchAssignment = (course: Course): Promise<Assignment> => {
                     request.setRequestHeader("Content-Type", "application/json"); //ヘッダの設定
                     request.send(senddata);
                     //ここまで送信部
+                    
                     resolve(new Assignment(course, assignmentEntries, false));
                 } else {
                     reject(`Request failed: ${response.status}`);
