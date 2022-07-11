@@ -23,9 +23,12 @@ function save() {
   localStorage.setItem('mydata', mydata);
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
+const loop = setInterval(() => {
+  if (document.querySelector(".cs-version")) {
+    document.querySelector(".cs-version").insertAdjacentHTML("afterend", '<p class="user_id">連携用 User ID = <span id="input_id"></span></p>');
     load()
     document.getElementById('input_id').innerHTML = uuid ;
     save()
-});
+    clearInterval(loop)
+  }
+}, 100)

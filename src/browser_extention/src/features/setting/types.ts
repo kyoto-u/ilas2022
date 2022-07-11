@@ -50,7 +50,7 @@ export class Settings {
         quiz: undefined
     };
     cacheInterval: CacheInterval = {
-        assignment: 120,
+        assignment: 5,
         quiz: 600
     };
     miniSakaiOption: DisplayOption = {

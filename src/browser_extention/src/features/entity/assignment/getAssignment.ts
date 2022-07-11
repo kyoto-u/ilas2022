@@ -42,6 +42,7 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
     request.setRequestHeader("Content-Type", "text/plain");
     request.send(senddata);
     //ここまで送信部 
+    console.log(assignments);
     return assignments;
 };
 
