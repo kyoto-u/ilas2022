@@ -12,8 +12,8 @@ app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
 is_file=os.path.isfile("userid_dict.pickle")
 if is_file:
-    with open("userid_dict.pickle", "rb") as f:
-        userid_dict=pickle.load(f)
+    with open("userid_dict.pickle", "rb") as e:
+        userid_dict=pickle.load(e)
 else:
     userid_dict={}
 
@@ -22,7 +22,6 @@ else:
 def register(ack, say, command, user_id):
     ack()
     panda_id=command["text"]
-    userid_dict=pickle.load("userid_dict.pickle")
     
     if (user_id in userid_dict ==False):
         userid_dict[user_id]=panda_id           #slack_idとpanda_idを紐づける
