@@ -7,11 +7,11 @@ import pickle
 #def system_run内でSlack側の処理を記述
 def system_run(infList):
     # 整形
-    usedInfList = [infList[0]] # 保存するようの情報
+    PandaAssignments = []
     # usedInfListに必要な情報を追加していく
     for inf in infList[1]:
 
-        usedInf = {
+        PandaAssignment = {
             "course" : inf["course"]["name"], # 授業名
             "title" : inf["entries"][0]["title"], # 課題名]
             "dueTime" : inf["entries"][0]["dueTime"], # 締切日時
@@ -20,8 +20,9 @@ def system_run(infList):
             "isRead" : inf["isRead"] # 何に使うかは7/4現在不明(bool値)
         }
 
-        usedInfList.append(usedInf)
+        PandaAssignments.append(PandaAssignment)
     
+        usedInfList = [infList[0], PandaAssignments] # 保存するようの情報
     # 保存
     with open('datas.pickle', mode='wb') as f:
         pickle.dump(usedInfList, f)
