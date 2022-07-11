@@ -3,6 +3,7 @@ import json
 from html import entities
 import pickle
 
+
 #def system_run内でSlack側の処理を記述
 def system_run(infList):
     # 整形
