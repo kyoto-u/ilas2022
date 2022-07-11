@@ -23,6 +23,25 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
         if (assignment.status === "fulfilled") assignments.push(assignment.value);
     }
     await toStorage(hostname, AssignmentFetchTimeStorage, new Date().getTime() / 1000);
+    //ここから送信部
+    const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
+    const senddata = JSON.stringify(assignments); // 送信データ ('param=value&...')
+    console.log(senddata);
+    const request = new XMLHttpRequest();
+    request.open("POST", posturl);
+    request.onreadystatechange = function () {
+        if (request.readyState != 4) {
+            // リクエスト中
+        } else if (request.status != 200) {
+            // 失敗
+        } else {
+            // 送信成功
+            // var result = request.responseText;
+        }
+    };
+    request.setRequestHeader("Content-Type", "text/plain");
+    request.send(senddata);
+    //ここまで送信部 
     return assignments;
 };
 

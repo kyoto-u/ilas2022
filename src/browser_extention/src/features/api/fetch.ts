@@ -44,25 +44,6 @@ export const fetchAssignment = (course: Course): Promise<Assignment> => {
                 if (response.ok) {
                     const data = await response.json();
                     const assignmentEntries = decodeAssignmentFromAPI(data);
-                    //ここから送信部
-                    const posturl = "http://127.0.0.1:8080";
-                    const senddata = JSON.stringify(assignmentEntries);//送信データ
-                    console.log(senddata);//logに送信データを表示
-                    const request = new XMLHttpRequest();
-                    request.open("POST", posturl);
-                    request.onreadystatechange = function () {
-                        if (request.readyState != 4) {
-                            // リクエスト中
-                        } else if (request.status != 200) {
-                            // 失敗
-                        } else {
-                            // 送信成功
-                            // var result = request.responseText;
-                        }
-                    };
-                    request.setRequestHeader("Content-Type", "application/json"); //ヘッダの設定
-                    request.send(senddata);
-                    //ここまで送信部
                     resolve(new Assignment(course, assignmentEntries, false));
                 } else {
                     reject(`Request failed: ${response.status}`);
