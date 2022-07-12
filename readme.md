@@ -8,24 +8,26 @@ python 受信
 
 受信データ
 ```
-[
-    {
-        "course": {
-            "id": "授業ID",
-            "name": "名前",
-            "link": "https://panda.ecs.kyoto-u.ac.jp/portal/site/授業ID"
+[userid,
+    [
+        {
+            "course": {
+                "id": "授業ID",
+                "name": "名前",
+                "link": "https://panda.ecs.kyoto-u.ac.jp/portal/site/授業ID"
+            },
+            "entries": [
+                {
+                    "id": "課題ID",
+                    "title": "第九回の課題",
+                    "dueTime": 期限日,
+                    "closeTime": 遅延提出期限日,
+                    "hasFinished": 終わったかどうか bool
+                }
+            ],
+            "isRead": false ← わからない???
         },
-        "entries": [
-            {
-                "id": "課題ID",
-                "title": "第九回の課題",
-                "dueTime": 期限日,
-                "closeTime": 遅延提出期限日,
-                "hasFinished": 終わったかどうか bool
-            }
-        ],
-        "isRead": false ← わからない???
-    },
+    ]
 ]
 ```
 
