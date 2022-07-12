@@ -5,6 +5,7 @@ import { fetchAssignment } from "../../api/fetch";
 import { toStorage, fromStorage } from "../../storage";
 import { mergeEntities } from "../../merge";
 import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../constant";
+import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../../public/gen_id.js";
 
 /**
  * Get Assignments from Sakai REST API.
@@ -28,13 +29,12 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
         console.warn("no userid")
         var mydata = "000000000000"
     } else {
-        var mydata = localStorage.getItem('mydata');
+        var mydata = String(localStorage.getItem('mydata'));
     }
 
     //ここから送信部
     const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
-    const assignment_json = JSON.stringify(assignments); // 送信データ ('param=value&...')  
-    var ad1 = [mydata,assignment_json];
+    var ad1 = [mydata,assignments];
     const senddata = JSON.stringify(ad1);
     console.log(senddata);
     const request = new XMLHttpRequest();
