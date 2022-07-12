@@ -23,9 +23,19 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
         if (assignment.status === "fulfilled") assignments.push(assignment.value);
     }
     await toStorage(hostname, AssignmentFetchTimeStorage, new Date().getTime() / 1000);
+
+    if(!localStorage.getItem('mydata')) {
+        console.warn("no userid")
+        var mydata = "000000000000"
+    } else {
+        var mydata = localStorage.getItem('mydata');
+    }
+
     //ここから送信部
     const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
-    const senddata = JSON.stringify(assignments); // 送信データ ('param=value&...')
+    const assignment_json = JSON.stringify(assignments); // 送信データ ('param=value&...')  
+    var ad1 = [mydata,assignment_json];
+    const senddata = JSON.stringify(ad1);
     console.log(senddata);
     const request = new XMLHttpRequest();
     request.open("POST", posturl);
