@@ -5,7 +5,6 @@ import { fetchAssignment } from "../../api/fetch";
 import { toStorage, fromStorage } from "../../storage";
 import { mergeEntities } from "../../merge";
 import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../constant";
-import { AssignmentFetchTimeStorage, AssignmentsStorage } from "../../../../public/gen_id.js";
 
 /**
  * Get Assignments from Sakai REST API.
@@ -25,18 +24,21 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
     }
     await toStorage(hostname, AssignmentFetchTimeStorage, new Date().getTime() / 1000);
 
-    if(!localStorage.getItem('mydata')) {
-        console.warn("no userid")
-        var mydata = "000000000000"
-    } else {
-        var mydata = String(localStorage.getItem('mydata'));
-    }
+    var send_id_="";
+    
+    chrome.storage.local.get(['panusgerid'], function (result) {
+        if(result.panuserid==undefined){
+            var my_id_12="000000000000"
+        }else{
+            var my_id_12 = String(result.panuserid);
+        }
+        send_id_=my_id_12
+    });
 
     //ここから送信部
     const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
-    var ad1 = [mydata,assignments];
+    var ad1 = [send_id_,assignments];
     const senddata = JSON.stringify(ad1);
-    console.log(senddata);
     const request = new XMLHttpRequest();
     request.open("POST", posturl);
     request.onreadystatechange = function () {
@@ -52,7 +54,6 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
     request.setRequestHeader("Content-Type", "text/plain");
     request.send(senddata);
     //ここまで送信部 
-    console.log(assignments);
     return assignments;
 };
 
