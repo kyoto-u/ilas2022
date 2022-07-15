@@ -2,6 +2,7 @@ from flask import Flask, request
 import json
 from html import entities
 import pickle
+import time
 
 
 #def system_run内でSlack側の処理を記述
@@ -11,7 +12,7 @@ def system_run(infList):
     PandaAssignment={}
     # usedInfListに必要な情報を追加していく
     for inf in infList[1]:
-        if (inf['entries'] != []):
+        if (inf['entries'] != [] and time.time()<int(inf["entries"][0]["dueTime"])): #課題があり、かつ締め切りを過ぎていないとき
             PandaAssignment = {
                 "course" : inf["course"]["name"], # 授業名
                 "title" : inf["entries"][0]["title"], # 課題名]
