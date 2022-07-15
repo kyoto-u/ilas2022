@@ -6,10 +6,10 @@ function getUniqueStr(){
 
 function load() {
     var value = "";
-    if(!localStorage.getItem('panuserid')) {
+    if(!localStorage.getItem('pan_userid')) {
       value = getUniqueStr();
     } else {
-      value = localStorage.getItem('panuserid');
+      value = localStorage.getItem('pan_userid');
     }
     user_id_12 = value;
     console.log("loaded"+user_id_12)
@@ -18,8 +18,8 @@ function load() {
 // 保存
 function save() {
   var value = user_id_12;
-  localStorage.setItem('panuserid', value);
-  chrome.storage.local.set({'panuserid': value}, function () {
+  localStorage.setItem('pan_userid', value);
+  chrome.storage.local.set({'pan_userid': value}, function () {
     console.log("saved id = "+ value)
   });
 }
