@@ -10,15 +10,15 @@ payload = [
     [ # infomation_list
         {
             "course": {
-                "id": "授業ID",
-                "name": "名前",
-                "link": "https://panda.ecs.kyoto-u.ac.jp/portal/site/授業ID"
+                "id": "2022-888-R106-054",
+                "name": "[2022前期金２]英語リーディング",
+                "link": "https://panda.ecs.kyoto-u.ac.jp/portal/site/2022-888-R106-054"
             },
             "entries": [
                 {
-                    "id": "課題ID",
-                    "title": "第九回の課題",
-                    "dueTime": "期限日",
+                    "id": "00001",
+                    "title": "最後のリサーチ報告",
+                    "dueTime": "1657980000",
                     "closeTime": "遅延提出期限日",
                     "hasFinished": "終わったかどうか" #bool　値
                 }
