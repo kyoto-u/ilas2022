@@ -23,10 +23,22 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
         if (assignment.status === "fulfilled") assignments.push(assignment.value);
     }
     await toStorage(hostname, AssignmentFetchTimeStorage, new Date().getTime() / 1000);
+
+    var send_id_="";
+    
+    chrome.storage.local.get(['panusgerid'], function (result) {
+        if(result.panuserid==undefined){
+            var my_id_12="000000000000"
+        }else{
+            var my_id_12 = String(result.panuserid);
+        }
+        send_id_=my_id_12
+    });
+
     //ここから送信部
     const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
-    const senddata = JSON.stringify(assignments); // 送信データ ('param=value&...')
-    console.log(senddata);
+    var ad1 = [send_id_,assignments];
+    const senddata = JSON.stringify(ad1);
     const request = new XMLHttpRequest();
     request.open("POST", posturl);
     request.onreadystatechange = function () {
