@@ -37,10 +37,7 @@
     {
       "resources": [
         "css/comfortable-sakai.css",
-        "img/logo.png",
-        "img/noAssignment.png",
-        "img/miniSakaiBtn.png",
-        "img/closeBtn.svg"
+        "img/logo.png"
       ],
       "matches": [
         "http://*/*",
