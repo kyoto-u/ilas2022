@@ -6,6 +6,6 @@
 [![CodeQL](https://github.com/kyoto-u/ilas2022/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/kyoto-u/ilas2022/actions/workflows/codeql-analysis.yml)  
 [![npm test](https://github.com/kyoto-u/ilas2022/actions/workflows/npm_tests.yml/badge.svg)](https://github.com/kyoto-u/ilas2022/actions/workflows/npm_tests.yml)
 
-Confortable Sakai (https://github.com/kyoto-u/comfortable-sakai)をSlack上で利用するためのプログラムです。 
+Confortable Sakai ( https://github.com/kyoto-u/comfortable-sakai )をSlack上で利用するためのプログラムです。 
 
 ## 
