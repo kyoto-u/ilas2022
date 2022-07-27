@@ -34,7 +34,8 @@ jobs:
 
       - name: Copy
         run: mkdir -p upload-dic && cp -fr  ./src/browser_extention/dist/source upload-dic
-        
+      - run: ls
+      - run: ls ./src/browser_extention/dist/source
       - name: save chrome
         uses: actions/upload-artifact@v2
         with:
