@@ -3,11 +3,7 @@
 
 name: npm build
 
-on:
-  push:
-    branches: [ "master" ,"typescript_reduced","typescript_verified"]
-  pull_request:
-    branches: [ "master" ]
+on: push
 
 jobs:
   build:
