@@ -28,4 +28,4 @@ jobs:
         run: npm ci
         working-directory: ./src/browser_extention/
       - run: npm run build:all
-      - run: npm test
+        working-directory: ./src/browser_extention/
