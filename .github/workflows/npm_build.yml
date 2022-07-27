@@ -40,19 +40,19 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: chrome
-          path: upload-dic/chrome
+          path: upload-dic/source/chrome
           if-no-files-found: error
           
       - name: save firefox
         uses: actions/upload-artifact@v2
         with:
           name: firefox
-          path: upload-dic/safari
+          path: upload-dic/source/safari
           if-no-files-found: error
         
       - name: save safari
         uses: actions/upload-artifact@v2
         with:
           name: chrome
-          path: upload-dic/safari
+          path: upload-dic/source/safari
           if-no-files-found: error
