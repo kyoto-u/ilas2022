@@ -53,6 +53,6 @@ jobs:
       - name: save safari
         uses: actions/upload-artifact@v2
         with:
-          name: chrome
+          name: safari
           path: upload-dic/source/safari
           if-no-files-found: error
