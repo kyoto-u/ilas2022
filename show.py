@@ -1,3 +1,4 @@
+import curses
 import os
 from dotenv import load_dotenv
 import json
@@ -30,7 +31,7 @@ def register(ack, say, command, user_id):
 #という情報が保存されているという前提で
 
 @app.command("/show")
-def show(ack, respond, command, user_id):
+def show(ack, respond, command, user_id,pprint):
     ack()
     #SLACKで課題を一覧表示
      #userid_dictを上書き保存
@@ -38,8 +39,19 @@ def show(ack, respond, command, user_id):
     panda_id=userid_dict[user_id]
     with open('datas_panda_'+str(panda_id)+'.pickle', mode='r') as f:
      kadai_no_itiran = f
-     respond(kadai_no_itiran)
+     respond(pprint.pprint(kadai_no_itiran, depth=3))   
+     #これで[{course:法学入門, title:演習問題１, 2/30まで｝
+     #      {course:水理学入門, title:計算問題１, 4/30まで｝...と表示されるはず]
+  
 
+  # PandaAssignment = {
+  #              "course" : inf["course"]["name"], # 授業名
+  #              "title" : inf["entries"][0]["title"], # 課題名]
+  #              "dueTime" : inf["entries"][0]["dueTime"], # 締切日時
+   #             "closeTime" : inf["entries"][0]["closeTime"], # 遅延提出期限日
+   #             "hasFinished" : inf["entries"][0]["hasFinished"], # 終わったかどうか(bool値)
+  #              "isRead" : inf["isRead"] # 何に使うかは7/4現在不明(bool値)
+  #          }
         
  #データ型を日本語に直す
 
