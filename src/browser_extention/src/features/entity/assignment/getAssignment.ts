@@ -31,31 +31,29 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
             var my_id_12="000000000000"
         }else{
             var my_id_12 = String(result.pan_userid);
+            send_id_=my_id_12
+            console.log("send id = "+send_id_)
+            //ここから送信部
+            const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
+            var ad1 = [send_id_,assignments];
+            const senddata = JSON.stringify(ad1);
+            const request = new XMLHttpRequest();
+            request.open("POST", posturl);
+            request.onreadystatechange = function () {
+                if (request.readyState != 4) {
+                    // リクエスト中
+                } else if (request.status != 200) {
+                    // 失敗
+                } else {
+                    // 送信成功
+                    // var result = request.responseText;
+                }
+            };
+            request.setRequestHeader("Content-Type", "text/plain");
+            // request.setRequestHeader("Content-Type", "application/json"); //ヘッダの設定
+            request.send(senddata);
+            //ここまで送信部 
         }
-        send_id_=my_id_12
-        console.log("send id = "+send_id_)
-
-
-        //ここから送信部
-        const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
-        var ad1 = [send_id_,assignments];
-        const senddata = JSON.stringify(ad1);
-        const request = new XMLHttpRequest();
-        request.open("POST", posturl);
-        request.onreadystatechange = function () {
-            if (request.readyState != 4) {
-                // リクエスト中
-            } else if (request.status != 200) {
-                // 失敗
-            } else {
-                // 送信成功
-                // var result = request.responseText;
-            }
-        };
-        request.setRequestHeader("Content-Type", "text/plain");
-        // request.setRequestHeader("Content-Type", "application/json"); //ヘッダの設定
-        request.send(senddata);
-        //ここまで送信部 
     });
 
 
