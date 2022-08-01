@@ -31,7 +31,7 @@ export class Settings {
         assignment: undefined,
     };
     cacheInterval: CacheInterval = {
-        assignment: 120,
+        assignment: 10,
     };
     miniSakaiOption: DisplayOption = {
         showCompletedEntry: true,
