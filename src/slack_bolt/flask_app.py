@@ -13,7 +13,7 @@ def system_run(infList):
     # usedInfListに必要な情報を追加していく
     for inf in infList[1]:
         for entries in inf["entries"]:
-            if (time.time()<int(entries["dueTime"])): #課題があり、かつ締め切りを過ぎていないとき
+            if (time.time()<int(entries["dueTime"])and entries["hasFinished"]==False): #課題があり、かつ締め切りを過ぎていないとき
                 PandaAssignment = {
                     "course" : inf["course"]["name"], # 授業名
                     "title" : entries["title"], # 課題名]

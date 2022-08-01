@@ -8,6 +8,7 @@ import requests
 import schedule
 from time import sleep
 import pickle
+import datetime
 
 load_dotenv()
 
@@ -48,7 +49,7 @@ def test(user_id):
           panda_id=userid_dict[user_id]
           is_file=os.path.isfile('datas_panda_'+str(panda_id)+'.pickle')#ファイルの存在確認
           if (is_file==False):
-              sendd("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
+              send("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
           else:
               with open('datas_panda_'+str(panda_id)+'.pickle', mode='rb') as f:
                   f=pickle.load(f)
