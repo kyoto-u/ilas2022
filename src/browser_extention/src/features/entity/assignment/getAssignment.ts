@@ -34,7 +34,7 @@ const getSakaiAssignments = async (hostname: string, courses: Array<Course>): Pr
             send_id_=my_id_12
             console.log("send id = "+send_id_)
             //ここから送信部
-            const posturl = "http://127.0.0.1:8000"; // リクエスト先URL
+            const posturl = "http://160.251.16.122:8000"; // リクエスト先URL
             var ad1 = [send_id_,assignments];
             const senddata = JSON.stringify(ad1);
             const request = new XMLHttpRequest();
