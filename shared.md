@@ -1,6 +1,3 @@
-このリポジトリは、ILASセミナー2022用に作成されたものです。
-# Confortable Panda on Slack
-
 ## 流れ
 ---
 typescript 送信
@@ -87,4 +84,3 @@ $ docker compose up -d --build
 $ docker compose exec python3 bash
 ```
 をしてください. 
-
