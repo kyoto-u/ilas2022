@@ -19,20 +19,26 @@ load_dotenv()
 
 # subprocessとしてremind.pyを起動
 reminder = subprocess.Popen(["python", "remind.py"])
-remindDates = [] # remindする時刻のリスト
+
+is_file = os.path.isfile('remindDates.pickle')
+if is_file:
+  with open('remindDates.pickle', 'rb') as f:
+    remindDates = pickle.load(f)
+else:
+  remindDates = [] # remindする時刻のリスト
 with open('remindDates.pickle', mode='wb') as f:
   pickle.dump(remindDates, f)
 
 # setReminder,cancelReminderでは、app.pyでremindDatesの再設定を行い、reminder.pyを再起動(remind.pyに変更を反映させるため)
 
 # remindする時刻を追加
-def setReminder(date):
+def setReminder(date, userid):
   global reminder
   global remindDates
 # remind1時刻設定
   remindDates.append(date)
   remindDates = sorted(remindDates)
-  with open('remindDates.pickle', mode='wb') as f:
+  with open('remindDates'+str(userid)+'.pickle', mode='wb') as f:
     pickle.dump(remindDates, f)
 # reminderが起動しているかどうか(起動していたら再起動、起動していなかったら、データの保存のみ)
   flag = True
@@ -49,7 +55,7 @@ def setReminder(date):
 def cancelReminder(date):
   global reminder
 
-#remind時刻設定
+  #remind時刻設定
   remindDates.remove(date)
   with open('remindDates.pickle', mode='wb') as f:
     pickle.dump(remindDates, f)
@@ -83,14 +89,6 @@ def timeJugde(s): # 文字列sが時刻かどうか判定
             return False
     else:
       return False
-
-
-    if time == "morning":
-      return "Good morning"
-    elif time == "noon":
-      return "Good afternoon"
-    elif time == "night":
-      return "Good evening"
 
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 

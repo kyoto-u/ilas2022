@@ -34,15 +34,22 @@ def register(ack, say, command, user_id):
 def show(ack, respond, command, user_id,pprint):
     ack()
     #SLACKで課題を一覧表示
-     #userid_dictを上書き保存
-    userid_dict=pickle.load("userid_dict.pickle")
-    panda_id=userid_dict[user_id]
-    with open('datas_panda_'+str(panda_id)+'.pickle', mode='r') as f:
-     kadai_no_itiran = f
-     respond(pprint.pprint(kadai_no_itiran, depth=3))   
-     #これで[{course:法学入門, title:演習問題１, 2/30まで｝
-     #      {course:水理学入門, title:計算問題１, 4/30まで｝...と表示されるはず]
-  
+    #userid_dictを上書き保存
+    is_file=os.path.isfile("userid_dict.pickle")#ファイルの存在確認
+    if (is_file==False):
+        respond("PandAIDが存在しません。/register コマンドで登録してください。")
+    else:
+        userid_dict=pickle.load("userid_dict.pickle")#
+        if (userid_dict[user_id]==None):
+            respond("PandAIDが存在しません。/register コマンドで登録してください。")
+        else:
+            panda_id=userid_dict[user_id]
+            with open('datas_panda_'+str(panda_id)+'.pickle', mode='r') as f:
+                kadai_no_itiran = f
+                respond(pprint.pprint(kadai_no_itiran, depth=3))
+            #これで[{course:法学入門, title:演習問題１, 2/30まで｝
+            #      {course:水理学入門, title:計算問題１, 4/30まで｝...と表示されるはず]
+        
 
   # PandaAssignment = {
   #              "course" : inf["course"]["name"], # 授業名

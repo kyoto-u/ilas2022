@@ -24,7 +24,7 @@ app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 #メッセージ送信関連　https://note.com/npaka/n/n4bcb38a1ea74
 
 # TOKEN = '<トークン>'
-CHANNEL = 'murakami' # 　ここに送るチャンネル名を書く
+CHANNEL = 'general' # 　ここに送るチャンネル名を書く
 TOKEN = str(os.environ.get("SLACK_BOT_TOKEN"))
 url = "https://slack.com/api/chat.postMessage"
 headers = {"Authorization": "Bearer "+TOKEN}

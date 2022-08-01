@@ -20,12 +20,10 @@ def system_run(infList):
                     "dueTime" : entries["dueTime"], # 締切日時
                     "closeTime" : entries["closeTime"], # 遅延提出期限日
                     "hasFinished" : entries["hasFinished"], # 終わったかどうか(bool値)
-                    "isRead" : inf["isRead"] 
                 }
-
-        PandaAssignments.append(PandaAssignment)
+                PandaAssignments.append(PandaAssignment)
     
-        usedInfList = [infList[0], PandaAssignments] # 保存するようの情報
+    usedInfList = [infList[0], PandaAssignments] # 保存するようの情報
     # 保存
     panda_id=infList[0]
     with open('datas_panda_'+str(panda_id)+'.pickle', mode='wb') as f:
