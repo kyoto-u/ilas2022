@@ -91,14 +91,6 @@ def timeJugde(s): # 文字列sが時刻かどうか判定
     else:
       return False
 
-
-    if time == "morning":
-      return "Good morning"
-    elif time == "noon":
-      return "Good afternoon"
-    elif time == "night":
-      return "Good evening"
-
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
 # remind関連
