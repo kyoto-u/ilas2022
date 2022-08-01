@@ -33,23 +33,26 @@ data  = {
 def send(message):
   data["text"] = message
   r = requests.post(url, headers=headers, data=data)
-  # print("return ", r.json())
+  print("return ", r.json())
 
 
 def test(user_id):
   is_file=os.path.isfile("userid_dict.pickle")#ファイルの存在確認
   if (is_file==False):
       send("PandAIDが存在しません。/register コマンドで登録してください。")
+      print("PandAIDが存在しません。/register コマンドで登録してください。")
   else:
       with open("userid_dict.pickle", 'rb') as pickle_file:
           userid_dict = pickle.load(pickle_file)
       if (userid_dict[user_id]==None):
           send("PandAIDが存在しません。/register コマンドで登録してください。")
+          print("PandAIDが存在しません。/register コマンドで登録してください。")
       else:
           panda_id=userid_dict[user_id]
           is_file=os.path.isfile('datas_panda_'+str(panda_id)+'.pickle')#ファイルの存在確認
           if (is_file==False):
               send("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
+              print("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
           else:
               with open('datas_panda_'+str(panda_id)+'.pickle', mode='rb') as f:
                   f=pickle.load(f)
@@ -63,8 +66,6 @@ def test(user_id):
                       kadai_no_itiran = "課題はありません"
                   send(kadai_no_itiran)
   
-
-
 # スケジュール登録
 with open('remindDates.pickle', mode='rb') as f:
     remindDates = pickle.load(f)
@@ -75,6 +76,6 @@ for mykey, myvalue in remindDates.items():
 # イベント実行
 while True:
     schedule.run_pending()
-    sleep(50)
+    sleep(10)
 
 SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()

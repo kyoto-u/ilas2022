@@ -35,6 +35,7 @@ const submitDetect = () => {
 
         (value as ValueInterface)[hostname].Assignments[assignmentIndex].entries[entryIndex].hasFinished = true;
         const value_tmp = { [String(hostname)]: value[hostname]};
+        console.log(value_tmp)
         chrome.storage.local.set(value_tmp);
       });
 
