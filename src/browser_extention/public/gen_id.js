@@ -1,31 +1,35 @@
-var uuid = "";
-function getUniqueStr(myStrong){
-    var strong = 1000;
-    if (myStrong) strong = myStrong;
-    return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+var user_id_12 = "";
+
+function getUniqueStr(){
+    return ("000000"+(Math.floor(100050000*Math.random())).toString(16)).slice(-6)+("000000"+parseInt((Math.round(new Date().getTime()*7)%100000000)).toString(16)).slice(-6)
 }
 
 function load() {
-    var mydata = "";
-    if(!localStorage.getItem('mydata')) {
-      mydata = getUniqueStr(12);
+    var value = "";
+    if(!localStorage.getItem('pan_userid')) {
+      value = getUniqueStr();
     } else {
-      mydata = localStorage.getItem('mydata');
+      value = localStorage.getItem('pan_userid');
     }
-    uuid = mydata;
-    console.log("loaded"+uuid)
+    user_id_12 = value;
+    console.log("loaded"+user_id_12)
 }
 
 // 保存
 function save() {
-  var mydata = uuid;
-  console.log(`saved_uuid`+uuid);
-  localStorage.setItem('mydata', mydata);
+  var value = user_id_12;
+  localStorage.setItem('pan_userid', value);
+  chrome.storage.local.set({'pan_userid': value}, function () {
+    console.log("saved id = "+ value)
+  });
 }
 
-
-document.addEventListener('DOMContentLoaded', function() {
+const loop = setInterval(() => {
+  if (document.querySelector(".cs-version")) {
+    document.querySelector(".cs-version").insertAdjacentHTML("afterend", '<p class="user_id">連携用 User ID = <span id="input_id"></span></p>');
     load()
-    document.getElementById('input_id').innerHTML = uuid ;
+    document.getElementById('input_id').innerHTML = user_id_12 ;
     save()
-});
+    clearInterval(loop)
+  }
+}, 100)

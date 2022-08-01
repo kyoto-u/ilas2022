@@ -44,6 +44,7 @@ export const fetchAssignment = (course: Course): Promise<Assignment> => {
                 if (response.ok) {
                     const data = await response.json();
                     const assignmentEntries = decodeAssignmentFromAPI(data);
+                    // console.log(assignmentEntries);
                     resolve(new Assignment(course, assignmentEntries, false));
                 } else {
                     reject(`Request failed: ${response.status}`);
