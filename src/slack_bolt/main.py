@@ -97,7 +97,7 @@ app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 # remind関連
 
 # コマンドでremind追加 ex.  /setRemind 07:30
-@app.command("/set2")
+@app.command("/set")
 def command_set(ack, respond, command, user_id):
   ack()
   reminderTime = command['text']
@@ -115,7 +115,7 @@ def command_set(ack, respond, command, user_id):
     respond("「" + reminderTime + "」は時刻として適切ではありません")
 
 # コマンドでremind削除 ex.  /cancelRemind 07:30
-@app.command("/cancel2")
+@app.command("/cancel")
 def command_cancel(ack, respond, command, user_id):
   ack()
   reminderTime = command['text']
