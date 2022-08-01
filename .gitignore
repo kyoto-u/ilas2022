@@ -1,0 +1,5 @@
+src/slack_bolt/.env
+src/slack_bolt/remindDates.pickle
+src/slack_bolt/userid_dict.pickle
+src/slack_bolt/datas_panda_*.pickle
+src/slack_bolt/__pycache__/*
