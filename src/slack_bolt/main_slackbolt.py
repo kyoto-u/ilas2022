@@ -5,33 +5,43 @@ import json
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import pickle
+import pprint
+import datetime
 load_dotenv()
 
-app = App(token=os.environ.get("REPORT1_BOT_TOKEN"))
+app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
 #kugiの作成箇所
 @app.command("/register")
-def register(ack, say, command, user_id):
+def register(ack, respond, command, user_id):
     ack()
-    panda_id=command["text"]
-    userid_dict=pickle.load("userid_dict.pickle")
-    if (user_id in userid_dict ==False):
-        userid_dict[user_id]=panda_id           #slack_idとpanda_idを紐づける
-        with open('userid_dict.pickle', mode='wb') as f:    #userid_dictを上書き保存
+    is_file=os.path.isfile("userid_dict.pickle")#ファイルの存在確認
+    if (is_file==False):
+        userid_dict={}
+        with open('userid_dict.pickle', mode='wb') as f:    #userid_dictを保存
             pickle.dump(userid_dict, f)
-        say("SlackIDとPandAIDの紐づけに成功しました")
     else:
-        dict_add={user_id:panda_id}
-        userid_dict.update(dict_add)
-        with open('userid_dict.pickle', mode='wb') as f:    #userid_dictを上書き保存
-            pickle.dump(userid_dict, f)
-        say("PandAIDを更新しました。")
+        panda_id=command["text"]
+        with open("userid_dict.pickle", 'rb') as pickle_file:
+            userid_dict = pickle.load(pickle_file)
+        if (user_id in userid_dict ==False):
+            userid_dict[user_id]=panda_id           #slack_idとpanda_idを紐づける
+            with open('userid_dict.pickle', mode='wb') as f:    #userid_dictを上書き保存
+                pickle.dump(userid_dict, f)
+            respond("SlackIDとPandAIDの紐づけに成功しました")
+        else:
+            dict_add={user_id:panda_id}
+            userid_dict.update(dict_add)
+            with open('userid_dict.pickle', mode='wb') as f:    #userid_dictを上書き保存
+                pickle.dump(userid_dict, f)
+            respond("PandAIDを更新しました。")
+
 #作成箇所終わり
 
 #という情報が保存されているという前提で
 
 @app.command("/show")
-def show(ack, respond, command, user_id,pprint):
+def show(ack, respond, command, user_id):
     ack()
     #SLACKで課題を一覧表示
     #userid_dictを上書き保存
@@ -39,14 +49,27 @@ def show(ack, respond, command, user_id,pprint):
     if (is_file==False):
         respond("PandAIDが存在しません。/register コマンドで登録してください。")
     else:
-        userid_dict=pickle.load("userid_dict.pickle")#
+        with open("userid_dict.pickle", 'rb') as pickle_file:
+            userid_dict = pickle.load(pickle_file)
         if (userid_dict[user_id]==None):
             respond("PandAIDが存在しません。/register コマンドで登録してください。")
         else:
             panda_id=userid_dict[user_id]
-            with open('datas_panda_'+str(panda_id)+'.pickle', mode='r') as f:
-                kadai_no_itiran = f
-                respond(pprint.pprint(kadai_no_itiran, depth=3))
+            is_file=os.path.isfile('datas_panda_'+str(panda_id)+'.pickle')#ファイルの存在確認
+            if (is_file==False):
+                respond("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
+            else:
+                with open('datas_panda_'+str(panda_id)+'.pickle', mode='rb') as f:
+                    f=pickle.load(f)
+                    kadai_no_itiran=""
+                    n=1
+                    f[1] = sorted(f[1], key=lambda x:x["dueTime"])
+                    for i in f[1]:
+                        kadai_no_itiran=kadai_no_itiran + str(n)+".　授業:"+i["course"]+"　　課題名:"+i["title"]+"　　期限日:"+str(datetime.datetime.fromtimestamp(i["dueTime"]))+"\n"
+                        n+=1
+                    if kadai_no_itiran =="":
+                        kadai_no_itiran = "課題はありません"
+                    respond(kadai_no_itiran)
             #これで[{course:法学入門, title:演習問題１, 2/30まで｝
             #      {course:水理学入門, title:計算問題１, 4/30まで｝...と表示されるはず]
         
@@ -63,9 +86,8 @@ def show(ack, respond, command, user_id,pprint):
  #データ型を日本語に直す
 
  #   @app.command("/task")     
- #   def todo(ack, respond, command, say):
+ #   def todo(ack, respond, command, respond):
  #       ack()
  #       respond(usedInfList)
 
-SocketModeHandler(app,os.environ["REPORT1_APP_TOKEN"]).start()
-
+SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()

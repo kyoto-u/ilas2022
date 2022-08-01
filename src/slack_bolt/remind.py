@@ -4,11 +4,6 @@ from dotenv import load_dotenv
 import json
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-
-#new install
-# pip install schedule
-
-#new import
 import requests
 import schedule
 from time import sleep
@@ -48,9 +43,9 @@ def test():
 # スケジュール登録
 with open('remindDates.pickle', mode='rb') as f:
     remindDates = pickle.load(f)
-for date in remindDates:
-  schedule.every().day.at(date).do(test).tag(date)
-
+for mykey, myvalue in remindDates.items():
+  for date in myvalue:
+    schedule.every().day.at(date).do(test, mykey).tag(date)
 
 # イベント実行
 while True:

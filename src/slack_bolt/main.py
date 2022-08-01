@@ -1,7 +1,9 @@
 from cgi import test
 import os
+import re
 from dotenv import load_dotenv
 import json
+from matplotlib import use
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import datetime # https://note.nkmk.me/python-datetime-now-today/
@@ -18,14 +20,14 @@ load_dotenv()
 # https://hashikake.com/subprocess
 
 # subprocessとしてremind.pyを起動
-reminder = subprocess.Popen(["python", "remind.py"])
+reminder = subprocess.Popen(["python3", "remind.py"])
 
 is_file = os.path.isfile('remindDates.pickle')
 if is_file:
   with open('remindDates.pickle', 'rb') as f:
     remindDates = pickle.load(f)
 else:
-  remindDates = [] # remindする時刻のリスト
+  remindDates = {"id":[]} # remindする時刻のリスト
 with open('remindDates.pickle', mode='wb') as f:
   pickle.dump(remindDates, f)
 
@@ -36,9 +38,9 @@ def setReminder(date, userid):
   global reminder
   global remindDates
 # remind1時刻設定
-  remindDates.append(date)
-  remindDates = sorted(remindDates)
-  with open('remindDates'+str(userid)+'.pickle', mode='wb') as f:
+  remindDates[userid].append(date)
+  remindDates[userid] = sorted(remindDates[userid])
+  with open('remindDates.pickle', mode='wb') as f:
     pickle.dump(remindDates, f)
 # reminderが起動しているかどうか(起動していたら再起動、起動していなかったら、データの保存のみ)
   flag = True
@@ -49,14 +51,14 @@ def setReminder(date, userid):
   if flag:
     reminder.kill()
     sleep(3) # reminderを終了する時間
-    reminder = subprocess.Popen(["python", "remind.py"])
+    reminder = subprocess.Popen(["python3", "remind.py"])
 
 # remindする時刻を削除
-def cancelReminder(date):
+def cancelReminder(date, userid):
   global reminder
 
   #remind時刻設定
-  remindDates.remove(date)
+  remindDates[userid].remove(date)
   with open('remindDates.pickle', mode='wb') as f:
     pickle.dump(remindDates, f)
 
@@ -69,7 +71,7 @@ def cancelReminder(date):
   if flag:
     reminder.kill()
     sleep(3) # reminderを終了する時間
-    reminder = subprocess.Popen(["python", "remind.py"])
+    reminder = subprocess.Popen(["python3", "remind.py"])
 
 
 def timeJugde(s): # 文字列sが時刻かどうか判定
@@ -95,27 +97,31 @@ app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 # remind関連
 
 # コマンドでremind追加 ex.  /setRemind 07:30
-@app.command("/set")
-def command_set(ack, respond, command):
+@app.command("/set2")
+def command_set(ack, respond, command, user_id):
   ack()
   reminderTime = command['text']
   if timeJugde(reminderTime):
-    if reminderTime in remindDates:
+    if not(user_id in remindDates):
+      remindDates[user_id]=[]
+    if reminderTime in remindDates[user_id]:
       respond("すでに" + reminderTime + "にはタスクの表示が設定されています")
     else:
-      setReminder(reminderTime)
+      setReminder(reminderTime, user_id)
       respond("毎日" + reminderTime + "にタスクを表示するように設定しました")
+
+      
   else:
     respond("「" + reminderTime + "」は時刻として適切ではありません")
 
 # コマンドでremind削除 ex.  /cancelRemind 07:30
-@app.command("/cancel")
-def command_cancel(ack, respond, command):
+@app.command("/cancel2")
+def command_cancel(ack, respond, command, user_id):
   ack()
   reminderTime = command['text']
   if timeJugde(reminderTime):
-    if reminderTime in remindDates:
-      cancelReminder(reminderTime)
+    if reminderTime in remindDates[user_id]:
+      cancelReminder(reminderTime, user_id)
       respond(reminderTime + "のタスクの表示を取り消しました")
     else:
       respond(reminderTime + "にはタスクの表示は登録されていません")
@@ -124,9 +130,9 @@ def command_cancel(ack, respond, command):
 
 # 現在登録しているremindを確認する
 @app.command("/list")
-def command_list(ack, respond, command):
+def command_list(ack, respond, command, user_id):
   ack()
-  l = ",".join(remindDates)
+  l = ",".join(remindDates[user_id])
   respond("現在予定しているリマインド時刻は" + l + "です")
 
 # remind.pyを終了
@@ -145,7 +151,7 @@ def start(message, say):
   if reminder.poll() is None:
     say("Reminderは既に動いています")
   elif reminder.poll() == 1:
-    reminder = subprocess.Popen(["python", "remind.py"])
+    reminder = subprocess.Popen(["python3", "remind.py"])
     say("Reminderを開始しました")
 
 
