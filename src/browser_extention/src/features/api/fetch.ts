@@ -1,8 +1,6 @@
 import { Assignment } from "../entity/assignment/types";
-import { Quiz } from "../entity/quiz/types";
 import { Course } from "../course/types";
 import { decodeAssignmentFromAPI } from "../entity/assignment/decode";
-import { decodeQuizFromAPI } from "../entity/quiz/decode";
 
 /* Sakai のURLを取得する */
 export const getBaseURL = (): string => {
@@ -46,24 +44,6 @@ export const fetchAssignment = (course: Course): Promise<Assignment> => {
                     const assignmentEntries = decodeAssignmentFromAPI(data);
                     // console.log(assignmentEntries);
                     resolve(new Assignment(course, assignmentEntries, false));
-                } else {
-                    reject(`Request failed: ${response.status}`);
-                }
-            })
-            .catch((err) => console.error(err)); // Error: Request failed: 404
-    });
-};
-
-/* Sakai APIからクイズを取得する */
-export const fetchQuiz = (course: Course): Promise<Quiz> => {
-    const queryURL = getBaseURL() + "/direct/sam_pub/context/" + course.id + ".json";
-    return new Promise((resolve, reject) => {
-        fetch(queryURL, { cache: "no-cache" })
-            .then(async (response) => {
-                if (response.ok) {
-                    const data = await response.json();
-                    const quizEntries = decodeQuizFromAPI(data);
-                    resolve(new Quiz(course, quizEntries, true));
                 } else {
                     reject(`Request failed: ${response.status}`);
                 }
