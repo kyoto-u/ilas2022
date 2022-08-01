@@ -8,3 +8,16 @@
 Confortable Sakai ( https://github.com/kyoto-u/comfortable-sakai )をSlack上で利用するためのプログラムです。
 
 ## Usage
+ここから拡張機能のパッケージをダウンロードし、インストールします。
+https://github.com/kyoto-u/ilas2022/releases
+
+ブラウザ上の拡張機能のアイコンをクリックし、 User IDを控えます。
+
+Slack上で/register [User ID]を実行し連携完了です！
+
+```
+/show　課題の一覧を表示します
+/set 07:30 07:30に課題一覧を送信します
+/cancel 07:30 07:30のリマインダーを削除します
+/list リマインダーの時間をすべて表示します。
+```
