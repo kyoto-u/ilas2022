@@ -35,9 +35,33 @@ def send(message):
   # print("return ", r.json())
 
 
-def test():
-  text = "task message test"
-  send(text)
+def test(user_id):
+  is_file=os.path.isfile("userid_dict.pickle")#ファイルの存在確認
+  if (is_file==False):
+      send("PandAIDが存在しません。/register コマンドで登録してください。")
+  else:
+      with open("userid_dict.pickle", 'rb') as pickle_file:
+          userid_dict = pickle.load(pickle_file)
+      if (userid_dict[user_id]==None):
+          send("PandAIDが存在しません。/register コマンドで登録してください。")
+      else:
+          panda_id=userid_dict[user_id]
+          is_file=os.path.isfile('datas_panda_'+str(panda_id)+'.pickle')#ファイルの存在確認
+          if (is_file==False):
+              sendd("まだ課題データが届いていません。拡張機能をインストールしたブラウザでSakaiを開いてください。")
+          else:
+              with open('datas_panda_'+str(panda_id)+'.pickle', mode='rb') as f:
+                  f=pickle.load(f)
+                  kadai_no_itiran=""
+                  n=1
+                  f[1] = sorted(f[1], key=lambda x:x["dueTime"])
+                  for i in f[1]:
+                      kadai_no_itiran=kadai_no_itiran + str(n)+".　授業:"+i["course"]+"　　課題名:"+i["title"]+"　　期限日:"+str(datetime.datetime.fromtimestamp(i["dueTime"]))+"\n"
+                      n+=1
+                  if kadai_no_itiran =="":
+                      kadai_no_itiran = "課題はありません"
+                  send(kadai_no_itiran)
+  
 
 
 # スケジュール登録
